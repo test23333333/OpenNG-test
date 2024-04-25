@@ -19,4 +19,4 @@ jobs:
     - name: Docker Setup QEMU
       uses: docker/setup-qemu-action@v3.0.0
     - name: Build the Docker image
-      run: docker buildx build --platform linux/amd64,linux/arm64 -t haoxingxing/OpenNG:auto-latest -f Dockerfile . --push
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t haoxingxing/ng:auto-latest -f Dockerfile . --push
