@@ -1,0 +1,23 @@
+
+on:
+    push:
+      branches: [ 'main' ]
+
+jobs:
+    build:
+        name: Release Go Binary
+        strategy:
+            matrix:
+              goos: [linux, darwin]
+              goarch: [amd64, arm64]
+              os: [ubuntu-latest, macos-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+          - uses: actions/checkout@v3
+          - name: Install dependencies
+            if: matrix.goos == linux
+            run: |
+              sudo apt-get update
+              sudo apt-get install -y gcc-multilib
+          - name: Build binary
+            run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} bash build.sh
