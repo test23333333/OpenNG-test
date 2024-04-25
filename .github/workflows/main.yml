@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker Setup Buildx
+      uses: docker/setup-buildx-action@v3.3.0
+    - name: Docker Setup QEMU
+      uses: docker/setup-qemu-action@v3.0.0
+    - name: Build the Docker image
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t haoxingxing/OpenNG:auto-latest -f Dockerfile . --push
