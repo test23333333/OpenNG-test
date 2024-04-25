@@ -10,12 +10,20 @@ jobs:
         include:
           - platform: linux_amd64
             os: ubuntu-latest
+            GOOS: linux
+            GOARCH: amd64
           - platform: linux_arm64
             os: ubuntu-latest
+            GOOS: linux
+            GOARCH: arm64
           - platform: darwin_amd64
             os: macos-latest
+            GOOS: darwin
+            GOARCH: amd64
           - platform: darwin_arm64
             os: macos-latest
+            GOOS: darwin
+            GOARCH: arm64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -24,13 +32,13 @@ jobs:
         with:
           go-version: '1.22'
       - name: Install dependencies
-        if: matrix.platform.split('_')[0] == 'linux'
+        if: matrix.GOOS == 'linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-multilib
       - name: Build binary
         run: |
           export CGO_ENABLED=1
-          export GOOS=${{ matrix.platform.split('_')[0] }}
-          export GOARCH=${{ matrix.platform.split('_')[1] }}
+          export GOOS=${{ matrix.GOOS }}
+          export GOARCH=${{ matrix.GOARCH }}
           bash build.sh -o OpenNG-${{ matrix.platform }}
